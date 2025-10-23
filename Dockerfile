@@ -5,7 +5,8 @@ FROM alpine:3.18
 RUN apk add --no-cache curl unzip
 
 # تحميل أحدث نسخة من PocketBase
-RUN curl -L -o /tmp/pb.zip https://github.com/pocketbase/pocketbase/releases/latest/download/pocketbase_0.22.15_linux_amd64.zip \
+RUN PB_URL=$(curl -s https://api.github.com/repos/pocketbase/pocketbase/releases/latest | grep browser_download_url | grep linux_amd64.zip | cut -d '"' -f 4) \
+    && curl -L -o /tmp/pb.zip $PB_URL \
     && unzip /tmp/pb.zip -d /pb \
     && rm /tmp/pb.zip
 
