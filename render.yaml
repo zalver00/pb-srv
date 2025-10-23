@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: pb_srv
+    env: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    healthCheckPath: /
