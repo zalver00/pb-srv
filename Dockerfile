@@ -10,11 +10,18 @@ RUN PB_URL=$(curl -s https://api.github.com/repos/pocketbase/pocketbase/releases
     && unzip /tmp/pb.zip -d /pb \
     && rm /tmp/pb.zip
 
-# تعيين مجلد العمل
+# نسخ بيانات التطبيق المحلية إلى السيرفر
 WORKDIR /pb
+COPY pb_data ./pb_data
+COPY pb_migrations ./pb_migrations
+COPY pb_hooks ./pb_hooks
+COPY pb_public ./pb_public
+
+# ضمان صلاحيات الكتابة
+RUN chmod -R 777 /pb/pb_data
 
 # فتح المنفذ الافتراضي
 EXPOSE 8090
 
-# أمر التشغيل الأساسي
-CMD ["./pocketbase", "serve", "--http", "0.0.0.0:8090"]
+# تشغيل PocketBase
+CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090"]
